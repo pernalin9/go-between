@@ -1,8 +1,8 @@
 # 传话筒 · go-between
 
-让 AI 发挥出本来的水平：在你和执行代理之间加一个传话筒。它先弄清你要什么，删掉会把 AI 带偏的猜测，再把干净的任务交出去。
+[English](README.en.md)
 
-*A go-between for AI agents: it clarifies what you want, strips guesses that would anchor the model, and hands a clean prompt to a fresh sub-agent.*
+让 AI 发挥出本来的水平：在你和执行代理之间加一个传话筒。它先弄清你要什么，删掉会把 AI 带偏的猜测，再把干净的任务交出去。
 
 ## 它解决什么问题
 
@@ -20,42 +20,58 @@ AI 并非不知道它不合适。问题在于 prompt 里提到的东西会锚定
 - 把整理好的 prompt 交给**不继承对话历史**的执行代理，再把结果原样带回来。
 - 多数请求原样转交，不为了显得有用而改写。
 
+默认版本的说明是英文的，但传话筒会用你使用的语言交流，中文用户可以直接用。也提供中文版（见下文）。
+
 ## 使用
 
-### 安装
+### Codex：一句话安装
 
-适用于 Codex、Claude Code、Cursor、Gemini CLI、GitHub Copilot 等支持 [Agent Skills](https://agentskills.io) 的工具：
+对 Codex 说：
+
+```text
+安装 pernalin9/go-between 仓库里的 skills/go-between，装好后读取它的 SKILL.md，本对话按它工作。
+```
+
+Codex 会用内置的 skill-installer 把它装到 `~/.codex/skills/go-between`。安装需要联网，Codex 会请你批准一次。装好后立即读取 SKILL.md，本对话就能生效；以后的新对话直接输入 `$go-between`。
+
+### 不安装，一句话试用
+
+在 Codex、Claude Code 这类能执行命令的工具里说：
+
+```text
+用 curl 下载 https://raw.githubusercontent.com/pernalin9/go-between/main/skills/go-between/SKILL.md ，读完整原文，本对话按它工作。
+```
+
+用 curl 而不是网页抓取工具，是因为有些抓取工具会先把页面交给另一个模型总结，拿到的就不是原文了。
+
+### 其他工具
+
+适用于 Claude Code、Cursor、Gemini CLI、GitHub Copilot 等支持 [Agent Skills](https://agentskills.io) 的工具：
 
 ```bash
 npx skills add pernalin9/go-between
 ```
 
-或使用 GitHub CLI（2.90 及以上）：
+安装时会让你选择英文版 `go-between` 或中文版 `go-between-zh`。也可以用 GitHub CLI（2.90 及以上）：
 
 ```bash
-gh skill install pernalin9/go-between go-between --pin v1.0.0
+gh skill install pernalin9/go-between go-between
 ```
 
-安装后在对话中启用：Codex 输入 `$go-between`，Claude Code 输入 `/go-between`。之后正常提需求即可，说"退出传话筒"恢复。
-
-### 不安装，直接试用
-
-在 Codex、Claude Code 这类能执行命令的工具里说：
-
-```text
-用 curl 下载 https://raw.githubusercontent.com/pernalin9/go-between/v1.0.0/skills/go-between/SKILL.md ，读完整原文，本次会话按它工作。
-```
-
-用 curl 而不是网页抓取工具，是因为有些抓取工具会先把页面交给另一个模型总结，拿到的就不是原文了。
+安装后在对话中启用，例如 Claude Code 输入 `/go-between`。说"退出传话筒"恢复。
 
 ### 聊天应用
 
 在 ChatGPT、Claude 网页版等不能启动子代理的地方，把 [SKILL.md](skills/go-between/SKILL.md) 的内容作为第一条消息发送。传话筒会把整理好的 prompt 交给你，由你粘贴到一个新对话里。新对话没有之前的历史，效果相同。
 
+### 中文版
+
+把上面的 `skills/go-between` 换成 `skills/go-between-zh`，`go-between` 换成 `go-between-zh` 即可。说明文件见 [skills/go-between-zh/SKILL.md](skills/go-between-zh/SKILL.md)。
+
 ## 注意
 
 - **确认执行代理不继承对话历史。** 部分版本的 Codex 子代理默认会继承完整对话，执行者就会看到你的原话，过滤失效。启用后，可以让传话筒派一个执行代理，问它"你能看到之前的对话吗"。
-- **固定版本。** 建议安装带版本号的发布（如 `v1.0.0`），而不是始终跟随 main 分支。任何 skill 都以 agent 的完整权限运行，安装前请先阅读 SKILL.md。
+- **以上方式都使用 main 分支上的最新版本。** 任何 skill 都以 agent 的完整权限运行，安装前请先阅读 SKILL.md。
 
 ## 依据
 
